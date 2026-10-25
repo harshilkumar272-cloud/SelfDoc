@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SelfDoc AI — organize reports, medicine reminders, and health info in one simple place. Demo prototype.">
+<title>SelfDoc AI — Your Everyday Health Companion</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" aria-label="Main navigation">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">✚</div>
+    <div>
+      <strong>SelfDoc <span>AI</span></strong>
+      <small>Your everyday health companion</small>
+    </div>
+  </div>
+
+  <div class="nav-label">WORKSPACE</div>
+  <nav class="nav" id="sideNav">
+    <button class="active" data-page="home" type="button"><span class="ico" aria-hidden="true">⌂</span>Dashboard</button>
+    <button data-page="reports" type="button"><span class="ico" aria-hidden="true">▤</span>Scan a report</button>
+    <button data-page="medicines" type="button"><span class="ico" aria-hidden="true">💊</span>Medicine reminders</button>
+    <button data-page="folder" type="button"><span class="ico" aria-hidden="true">▣</span>Health folder</button>
+    <button data-page="emergency" type="button"><span class="ico" aria-hidden="true">✚</span>Emergency help</button>
+  </nav>
+
+  <div class="nav-label" style="margin-top:18px">ACCOUNT</div>
+  <nav class="nav">
+    <button data-page="profile" type="button"><span class="ico" aria-hidden="true">♙</span>My health profile</button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="privacy-card">
+      <b>🔒 Your health matters</b>
+      Demo lists are saved in this browser only. No secure cloud account is connected.
+    </div>
+    <div class="profile-mini">
+      <div class="avatar" aria-hidden="true">👨🏻‍💻</div>
+      <div>
+        <b id="sidebarName">Harshil Kumar</b>
+        <small>Demo profile</small>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow" id="eyebrow">SATURDAY, OCTOBER 24</div>
+      <h1 id="pageHeading">Good morning, Harshil 👋</h1>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" type="button" title="Notifications" aria-label="Notifications" onclick="toast('You are all caught up!')">
+        ♧<span class="dot" aria-hidden="true"></span>
+      </button>
+      <button class="primary desktop" type="button" onclick="navigate('reports')">＋ Upload report</button>
+      <div class="avatar" aria-hidden="true">👨🏻‍💻</div>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <section class="page active" id="page-home" aria-label="Dashboard">
+    <div class="welcome">
+      <div>
+        <div class="eyebrow" style="color:#27876e">YOUR HEALTH, MADE SIMPLE</div>
+        <h2>A healthier you starts here.</h2>
+        <p>Understand your reports, stay on top of medicines, and keep your health information organized — all in one place.</p>
+        <button class="primary" type="button" onclick="navigate('reports')">Scan a medical report &nbsp; →</button>
+      </div>
+      <div class="welcome-art" aria-hidden="true">🩺💚</div>
+    </div>
+
+    <div class="grid stats">
+      <div class="stat">
+        <div class="stat-top">Saved reports <span class="stat-icon" aria-hidden="true">📄</span></div>
+        <strong id="reportCount">3</strong>
+        <small>In your health folder</small>
+      </div>
+      <div class="stat">
+        <div class="stat-top">Today's medicines <span class="stat-icon" aria-hidden="true">💊</span></div>
+        <strong id="medicineCount">2</strong>
+        <small id="medicineSub">1 dose left today</small>
+      </div>
+      <div class="stat">
+        <div class="stat-top">Health profile <span class="stat-icon" aria-hidden="true">💚</span></div>
+        <strong id="profilePct">75%</strong>
+        <small id="profilePctSub">Complete your profile</small>
+      </div>
+      <div class="stat">
+        <div class="stat-top">Next reminder <span class="stat-icon" aria-hidden="true">⏰</span></div>
+        <strong style="font-size:21px" id="nextReminder">8:00 PM</strong>
+        <small>Based on demo schedule</small>
+      </div>
+    </div>
+
+    <div class="section-head"><h3>What would you like to do?</h3></div>
+    <div class="grid features">
+      <div class="feature" role="button" tabindex="0" onclick="navigate('reports')" onkeydown="if(event.key==='Enter')navigate('reports')">
+        <div class="feature-icon" aria-hidden="true">📑</div>
+        <div>
+          <h4>Understand a report</h4>
+          <p>Upload a report and explore a simple, demo explanation.</p>
+        </div>
+      </div>
+      <div class="feature" role="button" tabindex="0" onclick="navigate('medicines')" onkeydown="if(event.key==='Enter')navigate('medicines')">
+        <div class="feature-icon" aria-hidden="true">💊</div>
+        <div>
+          <h4>Medicine reminders</h4>
+          <p>Manage your medicine list and mark doses as taken.</p>
+        </div>
+      </div>
+      <div class="feature" role="button" tabindex="0" onclick="navigate('folder')" onkeydown="if(event.key==='Enter')navigate('folder')">
+        <div class="feature-icon" aria-hidden="true">🗂️</div>
+        <div>
+          <h4>My health folder</h4>
+          <p>Keep your reports organized in one place.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid two-col" style="margin-top:22px">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Today's medicines</h3>
+          <button class="text-link" type="button" onclick="navigate('medicines')">View all →</button>
+        </div>
+        <div id="homeMeds"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Health tip of the day</h3><span aria-hidden="true">🌱</span></div>
+        <div class="health-note" id="healthTip">
+          <b>Small steps add up.</b><br>
+          Keep your reports organized, follow instructions from your healthcare professional, and bring questions about results to your next appointment.
+        </div>
+        <p class="notice">SelfDoc AI is a prototype for health information management, not a diagnostic tool.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORTS -->
+  <section class="page" id="page-reports" aria-label="Scan or upload a report">
+    <h2 class="page-title">Scan / Upload a report</h2>
+    <p class="page-subtitle">Add a medical report to preview it and try the sample explanation flow.</p>
+
+    <div class="grid upload-layout">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Upload medical report</h3>
+          <span class="status">Image or PDF</span>
+        </div>
+
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose a report file">
+          <div class="upload-icon" aria-hidden="true">📄</div>
+          <h3>Choose a report to get started</h3>
+          <p>Drag & drop an image or PDF here, or click to browse.<br>OCR runs in your browser. AI interpretation is not connected.</p>
+          <button class="primary" type="button" onclick="document.getElementById('fileInput').click()">Choose file</button>
+          <input class="file-input" id="fileInput" type="file" accept="image/*,.pdf,application/pdf" aria-hidden="true">
+        </div>
+
+        <div class="preview" id="filePreview">
+          <div class="file-icon" id="fileIcon" aria-hidden="true">📄</div>
+          <div class="row-main">
+            <b id="fileName">Selected file</b>
+            <small id="fileSize"></small>
+          </div>
+          <button class="secondary" type="button" onclick="clearFile()">Remove</button>
+        </div>
+
+        <div class="action-row">
+          <button class="primary" id="explainBtn" type="button" onclick="showExplanation()">✨ Extract & explain report</button>
+          <button class="secondary" type="button" onclick="toast('Camera access can be added when this prototype is connected to a real app backend.')">📷 Camera</button>
+        </div>
+        <p class="disclaimer">Image OCR uses a browser library loaded from the internet. No file is uploaded to a SelfDoc server. Real AI interpretation and secure cloud storage still require a backend.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>What you'll see</h3><span aria-hidden="true">✦</span></div>
+        <div class="health-note" style="margin-bottom:14px">
+          <b>1. Extract report text</b><br>Browser OCR can extract text from supported report images. PDF text extraction is also available for text-based PDFs.
+        </div>
+        <div class="health-note" style="margin-bottom:14px;background:#f4f1ff;border-color:#e5defb">
+          <b>2. Explain in simple language</b><br>A future secure AI service can explain medical terms and summarize the report.
+        </div>
+        <div class="health-note" style="background:#fff8e9;border-color:#f6e8c8">
+          <b>3. Review with a professional</b><br>Always confirm results and next steps with a qualified healthcare professional.
+        </div>
+
+        <div class="results" id="results">
+          <div class="section-head">
+            <h3>Report text & explanation</h3>
+            <span class="status" id="resultStatus">Demo mode</span>
+          </div>
+          <div class="result-banner" id="resultBanner">
+            <b>Demo mode:</b> Upload an image or text PDF to try extraction. AI interpretation requires a secure backend and is not connected in this frontend.
+          </div>
+          <div id="ocrOutput" class="ocr-box" style="display:none"></div>
+          <table class="result-table">
+            <thead>
+              <tr><th>Test</th><th>Example result</th><th>Demo label</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Hemoglobin</td><td>13.2 g/dL</td><td><span class="status">Example</span></td></tr>
+              <tr><td>WBC count</td><td>6,400 /µL</td><td><span class="status">Example</span></td></tr>
+              <tr><td>Platelet count</td><td>2.4 lakh/µL</td><td><span class="status">Example</span></td></tr>
+              <tr><td>Vitamin D</td><td>18 ng/mL</td><td><span class="status low">Example</span></td></tr>
+            </tbody>
+          </table>
+          <p class="disclaimer">These fictional values do not establish health status. Interpretation depends on the actual report, reference ranges, and clinical context.</p>
+          <button class="primary" type="button" style="margin-top:10px" onclick="saveReport()">＋ Save demo report to folder</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDICINES -->
+  <section class="page" id="page-medicines" aria-label="Medicine reminders">
+    <h2 class="page-title">Medicine reminders</h2>
+    <p class="page-subtitle">Keep a simple list of medicines and track doses in this interactive demo.</p>
+
+    <div class="toolbar">
+      <input class="search" id="medSearch" type="search" placeholder="Search medicines…" oninput="renderMedicines()" aria-label="Search medicines">
+      <button class="primary" type="button" onclick="openModal('medicineModal')">＋ Add medicine</button>
+    </div>
+    <div class="grid reminder-grid" id="medicineList"></div>
+    <p class="notice">These are demo reminders only. This webpage does not send background notifications or provide medication advice. Follow the prescription and advice of your healthcare professional.</p>
+  </section>
+
+  <!-- FOLDER -->
+  <section class="page" id="page-folder" aria-label="Health folder">
+    <h2 class="page-title">My health folder</h2>
+    <p class="page-subtitle">Your demo report library, organized in one simple place.</p>
+
+    <div class="toolbar">
+      <input class="search" id="reportSearch" type="search" placeholder="Search reports…" oninput="renderReports()" aria-label="Search reports">
+      <button class="primary" type="button" onclick="navigate('reports')">＋ Add report</button>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Saved reports</h3>
+        <span class="status" id="folderCount">3 reports</span>
+      </div>
+      <div id="reportList"></div>
+    </div>
+    <p class="notice">Reports shown here are sample entries or demo-session data. This frontend does not provide secure cloud storage.</p>
+  </section>
+
+  <!-- EMERGENCY -->
+  <section class="page" id="page-emergency" aria-label="Emergency help">
+    <div class="welcome" style="background:linear-gradient(110deg,#fff0f2,#fff8f7);border-color:#ffe0e5">
+      <div>
+        <div class="eyebrow" style="color:#d84960">HELP WHEN YOU NEED IT</div>
+        <h2 style="color:#a42d47">Emergency contacts</h2>
+        <p>Keep important contact details easy to find. In a medical emergency, contact your local emergency service.</p>
+        <div class="emergency-call-row">
+          <button class="danger emergency-call-btn" type="button" id="emergencyCallBtn" onclick="placeEmergencyCall()">
+            ☎ Call emergency
+          </button>
+          <span class="emergency-num-label" id="emergencyNumLabel">Set a number below</span>
+        </div>
+      </div>
+      <div class="welcome-art" aria-hidden="true">🆘</div>
+    </div>
+
+    <div class="panel" style="margin-bottom:18px">
+      <div class="panel-head">
+        <h3>Primary emergency number</h3>
+        <span class="status" id="primaryStatus">Not set</span>
+      </div>
+      <p class="page-subtitle" style="margin-bottom:12px">This number is used by the Call emergency button. Use a verified local emergency service number for your country (e.g. 112, 911, 108).</p>
+      <div class="toolbar" style="margin-bottom:0">
+        <input class="search" id="primaryEmergencyPhone" type="tel" placeholder="e.g. 112 or +91 108" aria-label="Primary emergency phone number" autocomplete="tel">
+        <button class="primary" type="button" onclick="savePrimaryEmergency()">Save number</button>
+      </div>
+      <p class="notice" style="margin-top:12px">This demo only opens your device’s phone dialer via a tel: link. It does not place a call by itself. Always verify the number for your location.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Your contacts</h3>
+        <button class="primary" type="button" onclick="openModal('contactModal')">＋ Add contact</button>
+      </div>
+      <div id="contactList"></div>
+      <p class="notice">Contacts are stored in this browser only. Call buttons open the dialer when the number looks valid. Verify every number before relying on it in a real emergency.</p>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="page" id="page-profile" aria-label="Health profile">
+    <h2 class="page-title">My health profile</h2>
+    <p class="page-subtitle">A place for basic information to help organize your health records.</p>
+
+    <div class="profile-card">
+      <div class="big-avatar" aria-hidden="true">👨🏻‍💻</div>
+      <div>
+        <h3 id="profileName">Harshil Kumar</h3>
+        <p>SelfDoc AI demo profile · Personal health organizer</p>
+      </div>
+    </div>
+
+    <div class="grid profile-grid">
+      <div class="panel">
+        <div class="panel-head"><h3>Personal information</h3></div>
+        <label class="form-label" for="nameField">Full name</label>
+        <input class="field" id="nameField" value="Harshil Kumar" autocomplete="name">
+        <label class="form-label" for="emailField">Email</label>
+        <input class="field" id="emailField" type="email" placeholder="you@example.com" autocomplete="email">
+        <label class="form-label" for="dobField">Date of birth (optional)</label>
+        <input class="field" id="dobField" type="date">
+        <button class="primary" type="button" onclick="saveProfile()">Save profile</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Health & privacy</h3></div>
+        <div class="health-note">
+          <b>Keep information safe</b><br>
+          This is a prototype. Do not enter real sensitive health information or upload confidential medical documents.
+        </div>
+        <p class="notice">A real release needs secure authentication, access controls, encrypted data handling, and a clear privacy policy.</p>
+        <button class="secondary" type="button" style="margin-top:12px" onclick="resetDemoData()">Reset demo data</button>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+  <button class="active" data-page="home" type="button"><span aria-hidden="true">⌂</span>Home</button>
+  <button data-page="reports" type="button"><span aria-hidden="true">▤</span>Reports</button>
+  <button data-page="medicines" type="button"><span aria-hidden="true">💊</span>Meds</button>
+  <button data-page="folder" type="button"><span aria-hidden="true">🗂️</span>Folder</button>
+  <button data-page="profile" type="button"><span aria-hidden="true">♙</span>Profile</button>
+</nav>
+
+<!-- Medicine modal -->
+<div class="modal-backdrop" id="medicineModal" role="dialog" aria-modal="true" aria-labelledby="medModalTitle" onclick="if(event.target===this)closeModal('medicineModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="medModalTitle">Add a medicine</h3>
+      <button class="close" type="button" aria-label="Close" onclick="closeModal('medicineModal')">×</button>
+    </div>
+    <form id="medicineForm">
+      <label class="form-label" for="medName">Medicine name</label>
+      <input class="field" id="medName" name="name" required placeholder="e.g. Medicine A" autocomplete="off">
+      <label class="form-label" for="medDose">Dosage instructions</label>
+      <input class="field" id="medDose" name="dose" placeholder="e.g. As prescribed">
+      <label class="form-label" for="medTime">Reminder time</label>
+      <input class="field" id="medTime" name="time" type="time" value="20:00" required>
+      <button class="primary" type="submit" style="width:100%">Add to demo list</button>
+    </form>
+  </div>
+</div>
+
+<!-- Contact modal -->
+<div class="modal-backdrop" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle" onclick="if(event.target===this)closeModal('contactModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="contactModalTitle">Add an emergency contact</h3>
+      <button class="close" type="button" aria-label="Close" onclick="closeModal('contactModal')">×</button>
+    </div>
+    <form id="contactForm">
+      <label class="form-label" for="contactName">Contact name</label>
+      <input class="field" id="contactName" name="name" required placeholder="e.g. Family member" autocomplete="name">
+      <label class="form-label" for="contactPhone">Phone number</label>
+      <input class="field" id="contactPhone" name="phone" type="tel" required placeholder="Phone number" autocomplete="tel">
+      <label class="form-label" for="contactRelation">Relationship</label>
+      <input class="field" id="contactRelation" name="relation" placeholder="e.g. Parent">
+      <button class="primary" type="submit" style="width:100%">Save contact</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
